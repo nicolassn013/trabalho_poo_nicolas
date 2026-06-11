@@ -24,9 +24,14 @@ Bomba bombaPrincipal("Bomba Principal");
 Bomba bombaReserva("Bomba Reserva");
   
 bombaPrincipal.ligar();
-  std::cout << bombaPrincipal.getNome()<<"ligada: " << bombaPrincipal.estaLigada()<< std::endl;
+  
+  std::cout
+    << bombaPrincipal.getNome()                <<"ligada: "
+    << bombaPrincipal.estaLigada()
+    << std::endl;
 
   bombaReserva.ligar();
+  
   std::cout << bombaReserva.getNome()<<"ligada: " << bombaReserva.estaLigada()<< std::endl;
   
   std::cout << bombaPrincipal.getNome()<< "bloqueada:" << bombaPrincipal.estaBloqueada() << std::endl;
