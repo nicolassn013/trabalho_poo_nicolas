@@ -4,6 +4,7 @@
 #include "SensorVazao.hpp"
 #include "SensorTemperatura.hpp"
 #include "Bomba.hpp"
+#include "SensorFactory.hpp"
 
 int main() {
 
@@ -37,6 +38,31 @@ bombaPrincipal.ligar();
   std::cout << bombaPrincipal.getNome()<< "bloqueada:" << bombaPrincipal.estaBloqueada() << std::endl;
 
   std::cout << bombaReserva.getNome()<< "bloqueada:" << bombaReserva.estaBloqueada() << std::endl;
+
+  Sensor* sensorNivel =
+      SensorFactory::criarSensor("nivel");
+
+  Sensor* sensorPressao =
+      SensorFactory::criarSensor("pressao");
+
+  std::cout
+      << sensorNivel->getTag()
+      << ": "
+      << sensorNivel->ler()
+      << " "
+      << sensorNivel->getUnidade()
+      << std::endl;
+
+  std::cout
+      << sensorPressao->getTag()
+      << ": "
+      << sensorPressao->ler()
+      << " "
+      << sensorPressao->getUnidade()
+      << std::endl;
+
+  delete sensorNivel;
+  delete sensorPressao;
   
   return 0;
 
