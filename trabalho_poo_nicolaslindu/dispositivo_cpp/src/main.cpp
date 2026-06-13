@@ -5,6 +5,8 @@
 #include "SensorTemperatura.hpp"
 #include "Bomba.hpp"
 #include "SensorFactory.hpp"
+#include "Alarme.hpp"
+
 
 int main() {
 
@@ -20,10 +22,11 @@ int main() {
   std::cout << vazao.ler() << std::endl;
   std::cout << temperatura.ler() << std::endl;
 
-  
+ //bombas 
 Bomba bombaPrincipal("Bomba Principal");
 Bomba bombaReserva("Bomba Reserva");
-  
+
+//    
 bombaPrincipal.ligar();
   
   std::cout
@@ -39,6 +42,7 @@ bombaPrincipal.ligar();
 
   std::cout << bombaReserva.getNome()<< "bloqueada:" << bombaReserva.estaBloqueada() << std::endl;
 
+  //sensores factory  
   Sensor* sensorNivel =
       SensorFactory::criarSensor("nivel");
 
@@ -63,7 +67,27 @@ bombaPrincipal.ligar();
 
   delete sensorNivel;
   delete sensorPressao;
-  
+
+    Alarme nivelBaixo(
+        "Nivel Baixo",
+        "Nivel abaixo de 27%"
+    );
+
+    nivelBaixo.ativar();
+
+    std::cout
+        << nivelBaixo.getNome()
+        << " ativo: "
+        << nivelBaixo.estaAtivo()
+        << std::endl;
+
+    std::cout
+        << nivelBaixo.getMensagem()
+        << std::endl;
+
+
+
+    
   return 0;
 
 }
