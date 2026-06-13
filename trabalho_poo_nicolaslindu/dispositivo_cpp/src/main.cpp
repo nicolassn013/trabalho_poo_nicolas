@@ -67,7 +67,8 @@ bombaPrincipal.ligar();
 
   delete sensorNivel;
   delete sensorPressao;
-
+    
+//alarmes
     Alarme nivelBaixo(
         "Nivel Baixo",
         "Nivel abaixo de 27%"
@@ -86,7 +87,28 @@ bombaPrincipal.ligar();
         << std::endl;
 
 
+//comandos 
+    Bomba bombaPrincipal("Bomba Principal");
 
+    LigarBombaCommand ligar(bombaPrincipal);
+
+    ligar.executar();
+
+    std::cout
+        << bombaPrincipal.getNome()
+        << " ligada: "
+        << bombaPrincipal.estaLigada()
+        << std::endl;
+
+    ligar.desfazer();
+
+    std::cout
+        << bombaPrincipal.getNome()
+        << " ligada: "
+        << bombaPrincipal.estaLigada()
+        << std::endl;
+
+    
     
   return 0;
 
