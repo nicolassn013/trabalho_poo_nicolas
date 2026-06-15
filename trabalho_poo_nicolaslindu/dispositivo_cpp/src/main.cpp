@@ -146,6 +146,25 @@ bombaPrincipal.ligar();
         << "Reserva ligada: "
         << reserva.estaLigada()
         << std::endl;
+
+    //falha sensornivel
+    sensorNivel.travar();
+
+    for (int i = 0; i < 10; i++) {
+
+        std::cout
+            << sensorNivel.ler()
+            << std::endl;
+    }
+
+//bomba block
+    bombaPrincipal.bloquear();
+
+    bombaPrincipal.ligar();
+
+    std::cout
+        << bombaPrincipal.estaLigada()
+        << std::endl;
     
   return 0;
 

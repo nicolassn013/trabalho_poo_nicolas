@@ -29,4 +29,9 @@ std::string Alarme::getNome() const{
 
 std::string Alarme::getMensagem() const{
   return mensagem;
+
+ Alarme alarmeBombaBloqueada("Bomba Bloqueada", "Falha na bomba");
+  if(bombaPrincipal.estaBloqueada()){
+    alarmeBombaBloqueada.ativar();
+  }
 }
