@@ -108,7 +108,44 @@ bombaPrincipal.ligar();
         << bombaPrincipal.estaLigada()
         << std::endl;
 
-    
+
+    //estacao regras
+    Bomba principal("Bomba Principal");
+    Bomba reserva("Bomba Reserva");
+
+    Alarme nivelBaixo(
+        "Nivel Baixo",
+        "Nivel abaixo de 27%"
+    );
+
+    Alarme pressaoAlta(
+        "Pressao Alta",
+        "Pressao acima de 7.0 bar"
+    );
+
+    EstacaoBombeamento estacao(
+        principal,
+        reserva,
+        nivelBaixo,
+        pressaoAlta
+    );
+
+    estacao.verificarNivel(20);
+
+    std::cout
+        << "Alarme nivel baixo: "
+        << nivelBaixo.estaAtivo()
+        << std::endl;
+
+    std::cout
+        << "Principal ligada: "
+        << principal.estaLigada()
+        << std::endl;
+
+    std::cout
+        << "Reserva ligada: "
+        << reserva.estaLigada()
+        << std::endl;
     
   return 0;
 
