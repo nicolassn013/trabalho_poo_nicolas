@@ -1,13 +1,14 @@
 #include "LigarBombaCommand.hpp"
 
-LigarBombaCommand::LigarBombaCommand(BombaM&boma): bomba(bomba)
+LigarBombaCommand::LigarBombaCommand(Bomba& bomba)
+    : bomba(bomba)
 {
 }
 
 void LigarBombaCommand::executar() {
-  bomba.ligar();
+    bomba.ligar();
 }
 
 void LigarBombaCommand::desfazer() {
-  bomba.desligar();
+    bomba.desligar();
 }

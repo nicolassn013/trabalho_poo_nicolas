@@ -2,22 +2,18 @@
 #define SENSORNIVEL_HPP
 #include "Sensor.hpp"
 
-//sensor nivel reservatorio
-class SensorNivel: public Sensor{
-//falha travar
-private: 
+class SensorNivel : public Sensor {
+private:
     bool travado;
     int ciclosTravados;
     double valorTravado;
 
-    void travar();
-
-    void destravar();
-
-    bool estaTravado() const;
-
-public: 
+public:
     SensorNivel();
     double ler() override;
+    void travar();
+    void destravar();
+    int getCiclosTravados() const;
 };
+
 #endif

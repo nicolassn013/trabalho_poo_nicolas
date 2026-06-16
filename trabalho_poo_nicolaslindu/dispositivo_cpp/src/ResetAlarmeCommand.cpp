@@ -1,13 +1,14 @@
 #include "ResetAlarmeCommand.hpp"
 
-ResetAlarmeCommand::ResetAlarmeCommand(Alarme& alarme) : alarme(alarme)
+ResetAlarmeCommand::ResetAlarmeCommand(Alarme& alarme)
+    : alarme(alarme)
 {
 }
 
-void ResetAlarmeCommand::executar(){
-  alarme.desativar();
+void ResetAlarmeCommand::executar() {
+    alarme.desativar();
 }
 
-void ResetAlarmeCommand::desfazer(){
-  alarme.ativar();
+void ResetAlarmeCommand::desfazer() {
+    alarme.ativar();
 }

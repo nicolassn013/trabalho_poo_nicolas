@@ -3,29 +3,24 @@
 #include "Bomba.hpp"
 #include "Alarme.hpp"
 
-//regras da estacao
 class EstacaoBombeamento {
-private: 
-  Bomba& bombaPrincipal;
-  Bomba& bombaReserva;
+private:
+    Bomba& bombaPrincipal;
+    Bomba& bombaReserva;
+    Alarme& alarmeNivelBaixo;
+    Alarme& alarmePressaoAlta;
+    bool ultimaFoiPrincipal;
 
-  Alarme& alarmeNivelBaixo;
-  Alarme& alarmePressaoAlta;
+public:
+    EstacaoBombeamento(
+        Bomba& bombaPrincipal,
+        Bomba& bombaReserva,
+        Alarme& alarmeNivelBaixo,
+        Alarme& alarmePressaoAlta
+    );
 
-  bool ultimaFoiPrincipal;
-
-public: 
-  EstacaoBombeamento(
-      Bomba& bombaPrincipal,
-      Bomba& bobmaReserva,
-      Alarme& alarmeNivelBaixo,
-      Alarme& alarmePressaoAlta
-  );
-
- void verificarNivel(double nivel);
-
- void verificarPressao(double pressao);
-
+    void verificarNivel(double nivel);
+    void verificarPressao(double pressao);
 };
 
 #endif

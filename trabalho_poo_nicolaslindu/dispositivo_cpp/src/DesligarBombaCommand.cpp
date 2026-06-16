@@ -1,13 +1,14 @@
 #include "DesligarBombaCommand.hpp"
 
-DesligarBombaCommand::DesligarBombaCommand(Bomba& bomba) : bomba(bomba)
+DesligarBombaCommand::DesligarBombaCommand(Bomba& bomba)
+    : bomba(bomba)
 {
 }
 
 void DesligarBombaCommand::executar() {
-  bobma.desligar();
+    bomba.desligar();
 }
 
-void DesligarBombaCommnad::desfazer() {
-  bomba.ligar();
+void DesligarBombaCommand::desfazer() {
+    bomba.ligar();
 }

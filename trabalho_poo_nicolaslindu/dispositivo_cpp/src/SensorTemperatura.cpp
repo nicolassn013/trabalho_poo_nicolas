@@ -2,14 +2,11 @@
 #include <cstdlib>
 
 SensorTemperatura::SensorTemperatura()
-    : Sensor("temperatura","C")
+    : Sensor("temperatura", "C")
 {
 }
 
-double SensorTemperatura::ler(){
-
-//temp de 20 a 40C
-  valor = 20 + (rad() % 21);
-
-  return valor;
+double SensorTemperatura::ler() {
+    valor = 20 + (rand() % 21);
+    return valor;
 }

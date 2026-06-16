@@ -1,11 +1,12 @@
 #ifndef SENSORFACTORY_HPP
 #define SENSORFACTORY_HPP
+#include <string>
+#include <memory>
 #include "Sensor.hpp"
 
-//factory pra criar sensores da estacao
 class SensorFactory {
 public:
-    static Sensor* criarSensor(const std::string& tipo)
+    static std::unique_ptr<Sensor> criar(const std::string& tipo);
 };
 
 #endif

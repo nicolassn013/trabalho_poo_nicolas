@@ -3,21 +3,20 @@
 #include "SensorPressao.hpp"
 #include "SensorVazao.hpp"
 #include "SensorTemperatura.hpp"
+#include <stdexcept>
 
-Sensor* SensorFactory::criarSensor(const std::string& tipo) {
+std::unique_ptr<Sensor> SensorFactory::criar(const std::string& tipo) {
     if (tipo == "nivel") {
-        return new SensorNivel()
+        return std::unique_ptr<Sensor>(new SensorNivel());
     }
     if (tipo == "pressao") {
-        return new SensorPressao()
-    } 
+        return std::unique_ptr<Sensor>(new SensorPressao());
+    }
     if (tipo == "vazao") {
-        return new SensorVazao()
+        return std::unique_ptr<Sensor>(new SensorVazao());
     }
     if (tipo == "temperatura") {
-        return new SensorTemperatura()
+        return std::unique_ptr<Sensor>(new SensorTemperatura());
     }
-
- return nullptr;
+    throw std::invalid_argument("Tipo de sensor desconhecido: " + tipo);
 }
-

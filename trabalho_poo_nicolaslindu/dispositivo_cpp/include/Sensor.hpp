@@ -2,29 +2,25 @@
 #define SENSOR_HPP
 #include <string>
 
-//classe base para todos sensores
-class Sensor( 
+class Sensor {
 protected:
     std::string tag;
     std::string unidade;
     double valor;
 
-public: 
+public:
     Sensor(
         const std::string& tag,
-        const std::string& unidade, 
+        const std::string& unidade
     );
 
-//destrutor virtual
-   virtual ~Sensor() = default;
-//nova leitura do sensor
-      virtual double ler() = 0;
+    virtual ~Sensor() = default;
 
-      std::string getTag() const;
+    virtual double ler() = 0;
 
-      std::string getUnidade() const;
+    std::string getTag() const;
+    std::string getUnidade() const;
+    double getValor() const;
+};
 
-      double getValor() const;
-  };
-
-  #endif
+#endif
