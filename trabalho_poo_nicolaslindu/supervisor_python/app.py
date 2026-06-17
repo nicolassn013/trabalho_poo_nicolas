@@ -3,11 +3,12 @@ import os
 import pandas as pd
 import streamlit as st
 
-sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from repository.sqlite_repository import SQLiteRepository
 
-BANCO = os.path.join(os.path.dirname(__file__), "leituras.db")
+_DIR  = os.path.dirname(os.path.abspath(__file__))
+BANCO = os.path.join(_DIR, "leituras.db")
 COLUNAS = ["id", "timestamp", "estacao", "tag", "tipo", "valor", "unidade", "status"]
 
 NIVEL_BAIXO  = 27.0
