@@ -30,3 +30,11 @@ NODE_ENV = "production"
 
 [services.production.health.startup]
 path = "/api/healthz"
+
+[[services]]
+localPort = 8000
+name = "Supervisor Python"
+paths = ["/supervisor"]
+
+[services.development]
+run = "python -m streamlit run trabalho_poo_nicolaslindu/supervisor_python/app.py --server.port 8000 --server.address 0.0.0.0 --server.headless true --server.baseUrlPath /supervisor"
