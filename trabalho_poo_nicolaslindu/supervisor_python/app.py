@@ -15,12 +15,12 @@ NIVEL_ALTO   = 80.0
 PRESSAO_ALTA = 7.0
 
 st.set_page_config(
-    page_title="Mini-SCADA EB-70",
+    page_title="Estação de Bombeamento EB-70",
     page_icon="🏭",
     layout="wide"
 )
 
-st.title("🏭 Mini-SCADA — Estação de Bombeamento EB-70")
+st.title("🏭 Estação de Bombeamento EB-70")
 st.caption("Supervisor de leituras, alarmes e falhas em tempo real.")
 
 @st.cache_data(ttl=5)
