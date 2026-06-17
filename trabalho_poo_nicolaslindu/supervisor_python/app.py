@@ -21,7 +21,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🏭 Estação de Bombeamento EB-70")
+st.title("Estação de Bombeamento EB-70")
 st.caption("Supervisor de leituras, alarmes e falhas em tempo real.")
 
 @st.cache_data(ttl=5)
@@ -40,7 +40,7 @@ if df.empty:
     st.stop()
 
 # --- Métricas da última leitura ---
-st.subheader("📊 Última Leitura por Sensor")
+st.subheader("Última Leitura por Sensor")
 
 sensores = ["nivel", "pressao", "vazao", "temperatura"]
 cols = st.columns(len(sensores))
@@ -62,7 +62,7 @@ for col, tipo in zip(cols, sensores):
 st.divider()
 
 # --- Gráfico: evolução do nível do reservatório ---
-st.subheader("📈 Evolução do Nível do Reservatório")
+st.subheader("Evolução do Nível do Reservatório")
 
 df_nivel = df[df["tipo"] == "nivel"].copy()
 
@@ -86,7 +86,7 @@ else:
 st.divider()
 
 # --- Histórico completo ---
-st.subheader("📋 Histórico Completo de Leituras")
+st.subheader("Histórico Completo de Leituras")
 
 col_busca, col_tipo, col_status = st.columns([3, 2, 2])
 
@@ -119,7 +119,7 @@ def colorir_status(val):
 
 st.dataframe(
     df_filtrado[["timestamp", "estacao", "tag", "tipo", "valor", "unidade", "status"]]
-    .style.applymap(colorir_status, subset=["status"]),
+    .style.map(colorir_status, subset=["status"]),
     use_container_width=True
 )
 st.caption(f"{len(df_filtrado)} registro(s) exibido(s) de {len(df)} total.")
@@ -130,7 +130,7 @@ st.divider()
 col_alerta, col_falha = st.columns(2)
 
 with col_alerta:
-    st.subheader("⚠️ Registros em ALERTA")
+    st.subheader("Registros em ALERTA")
     df_alerta = df[df["status"] == "ALERTA"][["timestamp", "tag", "tipo", "valor", "unidade"]]
     if df_alerta.empty:
         st.success("Nenhum alerta registrado.")
@@ -139,7 +139,7 @@ with col_alerta:
         st.caption(f"{len(df_alerta)} alerta(s)")
 
 with col_falha:
-    st.subheader("🚨 Registros em FALHA")
+    st.subheader("Registros em FALHA")
     df_falha = df[df["status"] == "FALHA"][["timestamp", "tag", "tipo", "valor", "unidade"]]
     if df_falha.empty:
         st.success("Nenhuma falha registrada.")
@@ -156,6 +156,6 @@ st.caption(
     f"Limites: nível {NIVEL_BAIXO}%–{NIVEL_ALTO}% | pressão < {PRESSAO_ALTA} bar"
 )
 
-if st.button("🔄 Atualizar dados"):
+if st.button("Atualizar dados"):
     st.cache_data.clear()
     st.rerun()
