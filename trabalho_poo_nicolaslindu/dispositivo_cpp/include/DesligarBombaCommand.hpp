@@ -1,19 +1,18 @@
-#ifndef DESLIGAR_BOMBA_COMMNAD_HPP
+#ifndef DESLIGAR_BOMBA_COMMAND_HPP
 #define DESLIGAR_BOMBA_COMMAND_HPP
 #include "Comando.hpp"
 #include "Bomba.hpp"
 
-//desligar bomba
-class DesligarBombaCommand : public Comando{
+// Desliga uma bomba.
+// O desfazer liga ela de volta — inverso exato do LigarBombaCommand.
+class DesligarBombaCommand : public Comando {
 private:
-  Bomba& bomba;
+    Bomba& bomba;
 
 public:
-  DesligarBombaCommand(Bomba& bomba);
-
-  void executar() override;
-
-  void desfazer() override;
+    DesligarBombaCommand(Bomba& bomba);
+    void executar() override;
+    void desfazer() override;
 };
 
 #endif

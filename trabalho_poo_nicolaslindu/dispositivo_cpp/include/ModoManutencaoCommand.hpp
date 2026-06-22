@@ -3,18 +3,16 @@
 #include "Comando.hpp"
 #include "Bomba.hpp"
 
-//bota bomba em manutencao
+// Coloca a bomba em modo de manutenção, bloqueando qualquer operação.
+// O desfazer desbloqueia e devolve a bomba ao estado normal.
 class ModoManutencaoCommand : public Comando {
 private:
-   Bomba& bomba;
+    Bomba& bomba;
 
-public: 
-  ModoManutencaoCommand(Bomba& bomba);
-
-  void executar() override;
-
-  void desfazer() override;
-
+public:
+    ModoManutencaoCommand(Bomba& bomba);
+    void executar() override;
+    void desfazer() override;
 };
 
 #endif

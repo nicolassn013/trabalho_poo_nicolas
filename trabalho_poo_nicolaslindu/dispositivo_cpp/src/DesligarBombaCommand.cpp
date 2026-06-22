@@ -10,5 +10,6 @@ void DesligarBombaCommand::executar() {
 }
 
 void DesligarBombaCommand::desfazer() {
+    // Desfaz desligando? Liga de volta. Inverso exato.
     bomba.ligar();
 }
