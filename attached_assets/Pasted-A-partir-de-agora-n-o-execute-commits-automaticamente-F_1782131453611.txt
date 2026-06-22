@@ -1,0 +1,92 @@
+A partir de agora, não execute commits automaticamente.
+
+Fluxo desejado:
+
+1. Faça análises e sugestões.
+2. Mostre os arquivos impactados.
+3. Explique as alterações propostas.
+4. Sugira uma mensagem de commit.
+5. Aguarde minha confirmação antes de qualquer alteração relevante.
+
+Objetivo:
+Manter o histórico de contribuições associado ao meu usuário GitHub.
+
+Quero iniciar uma fase de refinamento final do projeto EB-70.
+
+Importante:
+Não criar alterações artificiais apenas para gerar commits.
+Cada melhoria deve agregar valor real ao projeto.
+
+Analise os seguintes módulos:
+
+1. Command Pattern
+2. Sistema de Alarmes
+3. Regras da Estação
+4. Falhas Simuladas
+5. Exportação JSON Lines
+6. Persistência SQLite
+7. Supervisor Streamlit
+
+Para cada módulo:
+
+* Identifique melhorias reais de qualidade.
+* Procure oportunidades de refatoração leve.
+* Melhore nomes, organização e legibilidade.
+* Adicione comentários acadêmicos quando fizer sentido.
+* Remova redundâncias.
+* Verifique aderência à especificação.
+* Verifique possíveis bugs futuros.
+
+Além disso, avalie a viabilidade de adicionar um diferencial opcional:
+
+Alarme de Contaminação da Água
+
+Critérios:
+
+* Não quebrar os requisitos obrigatórios.
+* Não alterar a assinatura operacional EB-70.
+* Não exigir mudanças grandes na arquitetura.
+* Integrar com JSON, SQLite e Streamlit se o impacto for baixo.
+
+Antes de implementar qualquer diferencial, apresente:
+
+* Benefícios.
+* Impacto técnico.
+* Arquivos afetados.
+* Recomendação (implementar ou não).
+
+Planejamento desejado:
+
+Fase 1:
+Refinamento do Command Pattern
+→ gerar um commit próprio
+
+Fase 2:
+Refinamento dos Alarmes e Regras
+→ gerar um commit próprio
+
+Fase 3:
+Refinamento das Falhas Simuladas
+→ gerar um commit próprio
+
+Fase 4:
+Refinamento da Exportação JSON
+→ gerar um commit próprio
+
+Fase 5:
+Refinamento da Persistência SQLite
+→ gerar um commit próprio
+
+Fase 6:
+Refinamento do Supervisor Streamlit
+→ gerar um commit próprio
+
+Em cada fase:
+
+* Mostrar o que foi melhorado.
+* Mostrar os arquivos alterados.
+* Sugerir a mensagem de commit.
+* Não executar commit automaticamente.
+
+Objetivo final:
+Demonstrar a evolução do projeto e consolidar a versão final para entrega.
