@@ -4,6 +4,10 @@
 #include <string>
 #include <fstream>
 
+// JsonWriter serializa(converte dados) leituras no formato JSON Lines (.jsonl):
+// cada linha é um objeto JSON independente e completo.
+// O formato permite leitura que incrementa pelo supervisor Python,
+// acoplacao direta no SQLite e consumo linha por linha pelo Streamlit.
 class JsonWriter {
 private:
     std::string caminhoArquivo;
@@ -11,6 +15,9 @@ private:
     std::ofstream arquivo;
 
     std::string gerarTimestamp() const;
+
+    // Escapa caracteres especiais para garantir JSON válido.
+    //  aspas, barra invertida e caracteres de controle (\n, \r, \t).
     std::string escaparString(const std::string& s) const;
 
 public:

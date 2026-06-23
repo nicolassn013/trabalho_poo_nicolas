@@ -31,8 +31,11 @@ std::string JsonWriter::gerarTimestamp() const {
 std::string JsonWriter::escaparString(const std::string& s) const {
     std::string resultado;
     for (char c : s) {
-        if (c == '"')  resultado += "\\\"";
+        if      (c == '"')  resultado += "\\\"";
         else if (c == '\\') resultado += "\\\\";
+        else if (c == '\n') resultado += "\\n";
+        else if (c == '\r') resultado += "\\r";
+        else if (c == '\t') resultado += "\\t";
         else resultado += c;
     }
     return resultado;
@@ -48,7 +51,6 @@ void JsonWriter::escrever(
     if (!arquivo.is_open()) {
         throw std::runtime_error("Arquivo nao esta aberto para escrita.");
     }
-
     std::ostringstream linha;
     linha << std::fixed << std::setprecision(1);
     linha << "{"
@@ -60,7 +62,6 @@ void JsonWriter::escrever(
           << "\"unidade\":\""   << escaparString(unidade)          << "\","
           << "\"status\":\""    << escaparString(status)           << "\""
           << "}";
-
     arquivo << linha.str() << "\n";
     arquivo.flush();
 }
