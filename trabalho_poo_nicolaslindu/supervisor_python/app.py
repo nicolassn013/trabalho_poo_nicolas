@@ -11,9 +11,10 @@ _DIR  = os.path.dirname(os.path.abspath(__file__))
 BANCO = os.path.join(_DIR, "leituras.db")
 COLUNAS = ["id", "timestamp", "estacao", "tag", "tipo", "valor", "unidade", "status"]
 
-NIVEL_BAIXO  = 27.0
-NIVEL_ALTO   = 80.0
-PRESSAO_ALTA = 7.0
+# Assinatura operacional EB-70 — manter sincronizado com EstacaoBombeamento.hpp
+NIVEL_BAIXO  = 27.0  # % — abaixo disso aciona bomba
+NIVEL_ALTO   = 80.0  # % — acima disso desliga bombas
+PRESSAO_ALTA =  7.0  # bar — acima disso alarme de pressão
 
 st.set_page_config(
     page_title="Estação de Bombeamento EB-70",
@@ -73,6 +74,8 @@ else:
     df_nivel.index = df_nivel.index + 1
 
     chart_data = df_nivel.set_index("timestamp")[["valor"]].rename(columns={"valor": "Nível (%)"})
+    chart_data["Limite baixo (27%)"] = NIVEL_BAIXO
+    chart_data["Limite alto (80%)"]  = NIVEL_ALTO
 
     st.line_chart(chart_data)
 
@@ -107,6 +110,9 @@ if filtro_tipo != "Todos":
     df_filtrado = df_filtrado[df_filtrado["tipo"] == filtro_tipo]
 if filtro_status != "Todos":
     df_filtrado = df_filtrado[df_filtrado["status"] == filtro_status]
+
+# Mais recente primeiro
+df_filtrado = df_filtrado.sort_values("id", ascending=False)
 
 def colorir_status(val):
     if val == "ALERTA":
