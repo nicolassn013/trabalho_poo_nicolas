@@ -1,10 +1,6 @@
 #include "Alarme.hpp"
-
-// ------------------------------------------------------------
-// Construtor
-// Inicializa nome e mensagem via lista de inicialização.
-// O alarme começa sempre no estado inativo (ativo = false).
-// ------------------------------------------------------------
+ 
+// Começa sempre inativo — quem ativa é a EstacaoBombeamento.
 Alarme::Alarme(
     const std::string& nome,
     const std::string& mensagem
@@ -14,43 +10,28 @@ Alarme::Alarme(
       ativo(false)
 {
 }
-
-// ------------------------------------------------------------
-// ativar()
-// Sinaliza a ocorrência de um evento anormal. A EstacaoBombeamento
-// chama este método quando uma condição operacional é violada.
-// ------------------------------------------------------------
+ 
+// Algo saiu do normal — marca o alarme como disparado.
 void Alarme::ativar() {
     ativo = true;
 }
-
-// ------------------------------------------------------------
-// desativar()
-// Limpa o estado do alarme quando a condição retorna ao normal.
-// ------------------------------------------------------------
+ 
+// Condição voltou ao normal — limpa o alarme.
 void Alarme::desativar() {
     ativo = false;
 }
-
-// ------------------------------------------------------------
-// estaAtivo()
-// Consultado pelo sistema de persistência (JSON/SQLite) e pela
-// interface Streamlit para exibir o estado atual ao operador.
-// ------------------------------------------------------------
+ 
+// Consultado toda vez que o sistema precisa saber se o alarme está on.
 bool Alarme::estaAtivo() const {
     return ativo;
 }
-
-// ------------------------------------------------------------
-// getNome() / getMensagem()
-// Retornam referência constante para evitar cópia desnecessária
-// de std::string. Seguro porque o objeto Alarme tem ciclo de
-// vida maior que qualquer uso dessas referências.
-// ------------------------------------------------------------
+ 
+// Retorna referência direta para não copiar a string à toa.
 const std::string& Alarme::getNome() const {
     return nome;
 }
-
+ 
 const std::string& Alarme::getMensagem() const {
     return mensagem;
 }
+ 

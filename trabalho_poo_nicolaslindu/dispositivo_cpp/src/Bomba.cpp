@@ -36,3 +36,11 @@ bool Bomba::estaBloqueada() const {
 std::string Bomba::getNome() const {
     return nome;
 }
+
+// Retorna o status textual da bomba para escrita no JSON.
+// Prioridade: bloqueada > ligada > ok.
+std::string Bomba::getStatus() const {
+    if (bloqueada) return "FALHA";
+    if (ligada)    return "LIGADA";
+    return "OK";
+}

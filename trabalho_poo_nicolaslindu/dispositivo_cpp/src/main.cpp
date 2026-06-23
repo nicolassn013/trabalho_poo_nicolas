@@ -148,38 +148,55 @@ int main() {
     writer.escrever("PT-001", "pressao", 5.0, "bar", "OK");
     std::cout << "Pressao=5.0 | Alarme pressao alta: " << aPressaoAlta.estaAtivo() << std::endl;
 
-    // --- 7. FALHA SIMULADA 1: sensor de nivel travado por 10 ciclos ---
-    std::cout << "\n=== Falha Simulada 1: Sensor Nivel Travado ===" << std::endl;
+          // --- 7. FALHA SIMULADA 1: sensor de nivel travado por 10 ciclos ---
+              std::cout << "\n=== Falha Simulada 1: Sensor Nivel Travado ===" << std::endl;
 
-    SensorNivel nivelFalha;
-    nivelFalha.ler();
-    nivelFalha.travar();
+              SensorNivel nivelFalha;
 
-    for (int i = 0; i < 10; i++) {
-        double leitura = nivelFalha.ler();
-        writer.escrever("LT-001", "nivel", leitura, "%", "FALHA");
-        std::cout << "Ciclo " << (i + 1) << ": " << leitura << "%" << std::endl;
-    }
-    std::cout << "Ciclos travados: " << nivelFalha.getCiclosTravados() << std::endl;
+              // Lê antes de travar para garantir que o sensor tenha um valor
+              // inicial válido — travar() congela a última leitura feita.
+              nivelFalha.ler();
+              nivelFalha.travar();
 
-    nivelFalha.destravar();
-    double leituraPos = nivelFalha.ler();
-    writer.escrever("LT-001", "nivel", leituraPos, "%", statusNivel(leituraPos));
-    std::cout << "Sensor destravado. Nova leitura: " << leituraPos << "%" << std::endl;
+              // O loop usa contador fixo de 10 ciclos (determinístico por design).
+              // getCiclosTravados() é consultado depois apenas para confirmação,
+              // não para controlar o loop.
+              for (int i = 0; i < 10; i++) {
+                  double leitura = nivelFalha.ler();
+                  writer.escrever("LT-001", "nivel", leitura, "%", "FALHA");
+                  std::cout << "Ciclo " << (i + 1) << ": " << leitura << "%" << std::endl;
+              }
 
-    // --- 8. FALHA SIMULADA 2: bomba bloqueada ---
-    std::cout << "\n=== Falha Simulada 2: Bomba Bloqueada ===" << std::endl;
+              std::cout << "Ciclos travados: " << nivelFalha.getCiclosTravados() << std::endl;
 
-    Bomba bombaFalha("Bomba Falha");
-    bombaFalha.bloquear();
-    bombaFalha.ligar();
-    writer.escrever("BBA-001", "bomba", 0.0, "estado", "FALHA");
-    std::cout << bombaFalha.getNome() << " tentou ligar mas esta bloqueada: " << bombaFalha.estaLigada() << std::endl;
+              nivelFalha.destravar();
+              double leituraPos = nivelFalha.ler();
+              writer.escrever("LT-001", "nivel", leituraPos, "%", statusNivel(leituraPos));
+              std::cout << "Sensor destravado. Nova leitura: " << leituraPos << "%" << std::endl;
 
-    alarmeBombaBloqueada.ativar();
-    std::cout << alarmeBombaBloqueada.getNome() << " ativo: " << alarmeBombaBloqueada.estaAtivo() << std::endl;
+              // --- 8. FALHA SIMULADA 2: bomba bloqueada ---
+              std::cout << "\n=== Falha Simulada 2: Bomba Bloqueada ===" << std::endl;
 
-    std::cout << "\n=== Arquivo leituras.jsonl gerado com sucesso ===" << std::endl;
+              Bomba bombaFalha("Bomba Falha");
+              bombaFalha.bloquear();
+              bombaFalha.ligar(); // tentativa de ligar — ignorada porque a bomba está bloqueada
 
-    return 0;
-}
+              // statusBomba() avalia o estado real da bomba (bloqueada ou ligada)
+              // e devolve o texto que vai para o JSON, assim como statusNivel() e statusPressao().
+              writer.escrever("BBA-001", "bomba", 0.0, "estado", statusBomba(bombaFalha));
+
+              std::cout << bombaFalha.getNome()
+                        << " tentou ligar mas esta bloqueada: "
+                        << bombaFalha.estaLigada() << std::endl;
+
+              // Ativa o alarme se a bomba realmente ficou bloqueada após a tentativa.
+              if (bombaFalha.estaBloqueada()) {
+                  alarmeBombaBloqueada.ativar();
+              }
+
+              std::cout << alarmeBombaBloqueada.getNome()
+                        << " ativo: " << alarmeBombaBloqueada.estaAtivo() << std::endl;
+
+              std::cout << "\n=== Arquivo leituras.jsonl gerado com sucesso ===" << std::endl;
+              return 0;
+          }
