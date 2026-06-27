@@ -18,7 +18,7 @@ PRESSAO_ALTA =  7.0  # bar — acima disso alarme de pressão
 
 st.set_page_config(
     page_title="Estação de Bombeamento EB-70",
-    page_icon="🏭",
+    page_icon=None,
     layout="wide"
 )
 
