@@ -4,7 +4,7 @@
 #include "SensorPressao.hpp"
 #include "SensorVazao.hpp"
 #include "SensorTemperatura.hpp"
-#include "SensorTurbidez.hpp"
+#include "Sensorturbidez.hpp"
 #include "Bomba.hpp"
 #include "Alarme.hpp"
 #include "SensorFactory.hpp"

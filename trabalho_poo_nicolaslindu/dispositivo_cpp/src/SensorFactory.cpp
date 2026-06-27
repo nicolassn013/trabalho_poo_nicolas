@@ -3,7 +3,7 @@
 #include "SensorPressao.hpp"
 #include "SensorVazao.hpp"
 #include "SensorTemperatura.hpp"
-#include "SensorTurbidez.hpp"
+#include "Sensorturbidez.hpp"
 #include <stdexcept>
 
 std::unique_ptr<Sensor> SensorFactory::criar(const std::string& tipo) {
