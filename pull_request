@@ -1,0 +1,128 @@
+# Pull Request: EB-70 Mini-SCADA: Versão Final
+
+## Resumo
+
+Nesta Pull Request consolido o desenvolvimento completo do projeto **EB-70 Mini-SCADA**, um sistema supervisório acadêmico para monitoramento de uma estação de bombeamento. O projeto abrange um módulo C++ para simulação de sensores e controle de atuadores, exportação de leituras em JSON Lines, persistência em SQLite e um dashboard operacional em Streamlit.
+
+O desenvolvimento passou por seis fases de auditoria técnica, uma etapa completa de testes e duas implementações de diferencial acadêmico, resultando em um sistema estável, documentado e com pipeline de dados completamente validado.
+
+
+## Arquitetura que Implementei
+
+```
+C++ (eb70)  →  leituras.jsonl  →  importar.py  →  leituras.db  →  Streamlit
+```
+
+Dividi o sistema em dois módulos independentes que se comunicam exclusivamente via arquivo JSONL, sem acoplamento direto entre camadas. O módulo C++ aplica as regras operacionais da estação, exporta leituras e simula falhas. O supervisor Python importa os dados, persiste no SQLite e exibe o dashboard.
+
+
+## Padrões de Projeto
+
+### Factory Pattern
+Utilizei o `SensorFactory` para centralizar a criação de sensores por tipo string. A adição do `SensorTurbidez` na etapa final demonstrou o princípio Open/Closed na prática, não precisei alterar nenhuma classe existente, apenas criei uma nova e registrei uma entrada na factory.
+
+### Command Pattern
+Encapsuleo cada ação sobre bombas e alarmes em um objeto `Comando` com métodos `executar()` e `desfazer()`. A interface abstrata `Comando` define o contrato. Auditei e documentei todos os comandos na Fase 1.
+
+
+## Principais Implementações
+
+### Módulo C++
+- Hierarquia de sensores com classe base abstrata `Sensor` e implementações para nível, pressão, vazão, temperatura e turbidez
+- `Bomba` com controle de estado (ligada, bloqueada) e método `getStatus()` para serialização — decidi encapsular o status na classe em vez de manter função auxiliar solta no `main.cpp`
+- `Alarme` com retorno por `const std::string&`, elimina cópia desnecessária em cada leitura
+- `EstacaoBombeamento` com três regras operacionais, zona morta intencional e alternância automática de bombas
+- Limites operacionais extraídos para `static constexpr` — único ponto de verdade da assinatura EB-70
+- `JsonWriter` com `escaparString()` tratando aspas, barra invertida, `\n`, `\r` e `\t`
+- Simulação de falha 1: sensor travado por 10 ciclos determinísticos
+- Simulação de falha 2: bomba bloqueada com alarme ativado por verificação real de estado
+
+### Módulo Python
+- `JsonReader` — lê JSONL linha a linha, ignora linhas inválidas com log de erro
+- `SQLiteRepository` — persistência com gerenciamento seguro de conexão (`__del__`, `conn = None`, try/except)
+- `importar.py` — criei este orquestrador ao perceber que nenhum script existente conectava o JSONL real do C++ ao banco do Streamlit
+- `app.py` — dashboard com gráfico de nível com linhas de limite, histórico decrescente, filtros e colorização por status
+
+
+## Fases de Auditoria que Realizei
+
+### Fase 1 — Command Pattern
+Padronizei a indentação, adicionei documentação acadêmica do padrão GoF, documentei a simetria `executar()`/`desfazer()`, corrigi typo em include guard e adicionei nota sobre limitação do `ResetAlarmeCommand` em produção.
+
+### Fase 2 — Alarmes e EstacaoBombeamento
+Mudei o retorno de `getNome()` e `getMensagem()` para `const std::string&`, extraí os limiares EB-70 para `static constexpr`, documentei as regras operacionais e adicionei Doxygen nas interfaces. Decidi não implementar `enum Severidade` e timestamp, o risco de quebrar JSON e SQLite não justificava o ganho nesta fase.
+
+### Fase 3 — Simulações de Falha
+Adicionei comentários de intenção nas simulações, encapsulei `getStatus()` em `Bomba` e substituí o `alarmeBombaBloqueada.ativar()` incondicional por verificação real via `estaBloqueada()`.
+
+### Fase 4 — JsonWriter
+Completei `escaparString()` com três casos que estavam ausentes (`\n`, `\r`, `\t`) e documentei o formato JSON Lines no cabeçalho da classe.
+
+### Fase 5 — SQLiteRepository
+Melhorei a robustez da conexão com `conn = None` e `__del__`, adicionei tratamento de `sqlite3.Error` em `inserir()`, type hints para satisfazer o type checker do Replit e docstrings em toda a classe.
+
+### Fase 6 — Streamlit
+Documentei as constantes EB-70, adicionei linhas de limite no gráfico via colunas do DataFrame (mantendo `st.line_chart()` original), reordenei o histórico de forma decrescente.
+
+
+## Bugs que Encontrei e Corrigi
+
+| Bug | Origem | Como corrigi |
+|---|---|---|
+| `statusBomba was not declared` | `main.cpp` não atualizado após mover lógica para `Bomba::getStatus()` | Substituição cirúrgica de uma linha |
+| `Sensorturbidez.hpp: No such file or directory` | Capitalização incorreta no `#include` | `sed -i` corrigiu os dois arquivos afetados |
+| `Attribute execute is not defined on None` | `conn = None` gerou tipo ambíguo para o type checker | Type hint explícito + guards `if not self.conn` |
+| `Name NIVEL_BAIXO used when not defined` | F-strings nas chaves do dicionário | Substituição por strings fixas |
+| Streamlit inacessível no Replit | Porta 8501 mapeada para externa 3001 | Configuração correta no painel Networking |
+
+## Testes que Executei
+
+| Teste | Resultado |
+|---|---|
+| Compilação completa do C++ | ✅ |
+| Assinatura operacional EB-70 (27%, 80%, 7.0 bar) | ✅ |
+| Sensor travado — 10 ciclos, `getCiclosTravados() == 10` | ✅ |
+| Bomba bloqueada — `estaLigada() == 0`, alarme ativo | ✅ |
+| JSONL gerado — 7 campos obrigatórios, JSON válido por linha | ✅ |
+| Importação JSON → SQLite — 8 registros lidos e gravados | ✅ |
+| Fluxo completo — C++ → JSONL → SQLite → Streamlit | ✅ |
+
+
+## Diferencial Acadêmico — SensorTurbidez
+
+Adicionei o `SensorTurbidez` (tag `AT-001`, unidade `NTU`) para demonstrar na prática o princípio Open/Closed via Factory Pattern. Não modifiquei nenhum sensor existente, apenas criei a nova classe e registrei uma linha no `SensorFactory`. JSON, SQLite e Streamlit suportaram o novo sensor automaticamente.
+
+Implementei após todos os testes aprovados, para não arriscar a estabilidade do sistema na reta final.
+
+
+## Decisões que Tomei Conscientemente e Não Implementei
+
+Durante as auditorias, identifiquei várias melhorias possíveis que optei por não implementar:
+
+- **`enum Severidade` e timestamp em `Alarme`** — exigiriam alterações no schema JSON e SQLite sem benefício imediato
+- **Fallback de bomba bloqueada** — exigiria alterar `Bomba.hpp` fora do escopo definido
+- **`std::localtime_r()`** — sem impacto real em projeto single-thread
+- **`logging` no `JsonReader`** — deixei para pós-entrega
+- **`plotly` no gráfico Streamlit** — preferi não adicionar dependência nova na fase final
+- **Limite em `listar()`** — risco de impacto silencioso no Streamlit
+
+
+## Documentação que Adicionei
+
+- `README.md` — visão geral, arquitetura, instruções completas de execução e tabela de testes
+- `AI_LOG.md` — registro cronológico detalhado de como utilizei as ferramentas de IA
+- Doxygen em `Alarme.hpp`, `EstacaoBombeamento.hpp` e `Bomba.hpp`
+- Comentários de regras operacionais em `EstacaoBombeamento.cpp`
+- Comentário do formato JSON Lines em `JsonWriter.hpp`
+- Docstrings completas em `sqlite_repository.py`
+
+---
+
+## Conclusão
+
+O projeto EB-70 atingiu todos os objetivos que defini. O pipeline de dados está completamente funcional e validado de ponta a ponta. Os padrões GoF Factory e Command estão implementados, documentados e demonstrados — tanto em uso normal quanto em extensão com o `SensorTurbidez`. O código passou por seis fases de auditoria técnica com melhorias estruturais e de robustez, sem quebra de compatibilidade entre módulos. O dashboard Streamlit exibe os dados reais gerados pelo módulo C++ com layout operacional profissional.
+
+---
+
+**Desenvolvedor:** Nicolas Lindu
+**Branch:** `main`
