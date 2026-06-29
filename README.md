@@ -1,6 +1,6 @@
-# EB-70 — Mini-SCADA para Estação de Bombeamento
+# EB-70  Mini-SCADA para Estação de Bombeamento
 
-Este projeto é um sistema supervisório simplificado (Mini-SCADA) que desenvolvi para a disciplina de Programação Orientada a Objetos. O sistema monitora em tempo real uma estação de bombeamento, exporta leituras em JSON Lines, persiste os dados em SQLite e exibe um dashboard operacional via Streamlit.
+Este projeto é um sistema supervisório simplificado, que desenvolvi para a disciplina de Programação Orientada a Objetos. O sistema monitora em tempo real uma estação de bombeamento, exporta leituras em JSON Lines, persiste os dados em SQLite e exibe um dashboard operacional via Streamlit.
 
 
 ## Objetivo
