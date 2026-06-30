@@ -10,6 +10,6 @@ void LigarBombaCommand::executar() {
 }
 
 void LigarBombaCommand::desfazer() {
-    // Desfaz ligando? Desliga. Faz sentido.
+    // Desliga.
     bomba.desligar();
 }
