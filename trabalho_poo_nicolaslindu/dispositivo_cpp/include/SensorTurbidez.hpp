@@ -3,7 +3,7 @@
 
 #include "Sensor.hpp"
 
-// Sensor de turbidez da água — mede contaminação em NTU.
+// Sensor de turbidez da água, mede contaminação em NTU.
 // Integrado via Factory Pattern sem alterar sensores existentes.
 class SensorTurbidez : public Sensor {
 public:
