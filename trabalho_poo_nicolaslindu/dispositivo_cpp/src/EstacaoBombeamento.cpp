@@ -16,11 +16,11 @@ EstacaoBombeamento::EstacaoBombeamento(
 {
 }
  
-// Regra 1 — nível baixo (< 27%):
+// Regra 1 - nível baixo (< 27%):
 //   Dispara o alarme e liga a próxima bomba na fila.
 //   As bombas alternam a cada acionamento para distribuir o desgaste.
 //
-// Regra 2 — nível alto (> 80%):
+// Regra 2 - nível alto (> 80%):
 //   Desliga as duas bombas e limpa o alarme de nível.
 //
 // Entre 27% e 80% não faz nada, essa zona morta evita que as bombas
@@ -50,7 +50,6 @@ void EstacaoBombeamento::verificarNivel(double nivel) {
  
 // Regra 3 — pressão alta (> 7.0 bar): dispara o alarme.
 // Voltou ao normal: limpa o alarme.
-// Decidir se desliga a bomba por pressão é responsabilidade de quem chama.
 void EstacaoBombeamento::verificarPressao(double pressao) {
  
     if (pressao > PRESSAO_ALTA_LIMITE) {
