@@ -1,9 +1,9 @@
 #ifndef COMANDO_HPP
 #define COMANDO_HPP
 
-// Interface base do padrão Command (GoF).
+// Interface base do padrão Command.
 // Toda ação do sistema passa por aqui: executar faz a coisa,
-// desfazer volta atrás. Simples assim.
+// desfazer volta atrás.
 class Comando {
 public:
     virtual void executar() = 0;
