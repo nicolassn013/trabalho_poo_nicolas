@@ -1,7 +1,7 @@
 #include "EstacaoBombeamento.hpp"
  
 // A bomba principal é sempre a primeira a ser acionada na partida.
-// As bombas e alarmes chegam prontos de fora — quem os cria é a Factory.
+// As bombas e alarmes chegam prontos de fora; Factory.
 EstacaoBombeamento::EstacaoBombeamento(
     Bomba& bombaPrincipal,
     Bomba& bombaReserva,
@@ -18,12 +18,12 @@ EstacaoBombeamento::EstacaoBombeamento(
  
 // Regra 1 — nível baixo (< 27%):
 //   Dispara o alarme e liga a próxima bomba na fila.
-//   As bombas se alternam a cada acionamento para distribuir o desgaste.
+//   As bombas alternam a cada acionamento para distribuir o desgaste.
 //
 // Regra 2 — nível alto (> 80%):
 //   Desliga as duas bombas e limpa o alarme de nível.
 //
-// Entre 27% e 80% não faz nada — essa zona morta evita que as bombas
+// Entre 27% e 80% não faz nada, essa zona morta evita que as bombas
 // fiquem ligando e desligando o tempo todo por variações pequenas.
 void EstacaoBombeamento::verificarNivel(double nivel) {
  
@@ -45,7 +45,7 @@ void EstacaoBombeamento::verificarNivel(double nivel) {
         alarmeNivelBaixo.desativar();
     }
  
-    // zona morta: sem ação
+   
 }
  
 // Regra 3 — pressão alta (> 7.0 bar): dispara o alarme.
